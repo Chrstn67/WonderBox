@@ -1,9 +1,9 @@
 {
   "id": "wonderbox",
   "name": "WonderBox",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "minAppVersion": "0.12.0",
-  "description": "Create more relevant text sections your tips, top notes, warnings and more",
+  "description": "Create more relevant text sections your tips, top notes, warnings and more.",
   "author": "Christian Humbert",
   "authorUrl": "https://github.com/Chrstn67/",
   "isDesktopOnly": false
