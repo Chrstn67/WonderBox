@@ -51,9 +51,9 @@ Vous pouvez utiliser ce plugin pour organiser vos notes efficacement !
 :::
 ```
 
-![Rendu version française](https://github.com/Chrstn67/ShowCase/raw/main/images/rendu-version-francaise.png)
+![Rendu version française](https://github.com/Chrstn67/WonderBox/raw/main/images/rendu-version-francaise.png)
 
-![Rendu version française 2](https://github.com/Chrstn67/ShowCase/raw/main/images/rendu-version-francaise-2.png)
+![Rendu version française 2](https://github.com/Chrstn67/WonderBox/raw/main/images/rendu-version-francaise-2.png)
 
 ⚠️ Il s'agit d'écrire du texte. La synataxe markdown (les `#`, les `backticks`, etc... ne sont pas pris en compte)
 
@@ -110,9 +110,9 @@ You can use this plugin to organize your notes efficiently!
 :::
 ```
 
-![Render English Version](https://github.com/Chrstn67/ShowCase/raw/main/images/render-english-version.png)
+![Render English Version](https://github.com/Chrstn67/WonderBox/raw/main/images/render-english-version.png)
 
-![Render English Version 2](https://github.com/Chrstn67/ShowCase/raw/main/images/render-english-version-2.png)
+![Render English Version 2](https://github.com/Chrstn67/WonderBox/raw/main/images/render-english-version-2.png)
 
 ⚠️ It's all about writing text. The markdown syntax (`#`, `backticks`, etc... are not taken into account)
 
