@@ -3,7 +3,7 @@ const { Plugin } = require("obsidian");
 module.exports = class MyPlugin extends Plugin {
   async onload() {
     // Charger les styles CSS depuis un fichier local
-    this.loadStyles();
+    await this.loadStyles();
 
     // Inscription d'un processeur de post-traitement de markdown
     this.registerMarkdownPostProcessor((element) => {
@@ -12,8 +12,10 @@ module.exports = class MyPlugin extends Plugin {
   }
 
   // Fonction pour charger les styles CSS dynamiquement
-  loadStyles() {
-    const stylePath = `${this.manifest.dir}/styles.css`; // Obtenir le chemin relatif au fichier CSS
+  async loadStyles() {
+    const stylePath = this.app.vault.adapter.getResourcePath(
+      `${this.manifest.dir}/styles.css`
+    ); // Obtenir un chemin valide
     const link = document.createElement("link");
     link.rel = "stylesheet";
     link.href = stylePath;
