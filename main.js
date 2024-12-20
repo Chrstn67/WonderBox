@@ -2,8 +2,8 @@ const { Plugin } = require("obsidian");
 
 module.exports = class MyPlugin extends Plugin {
   async onload() {
-    // Charger les styles CSS depuis un fichier local
-    await this.loadStyles();
+    // Charger les styles CSS en ligne
+    this.injectStyles();
 
     // Inscription d'un processeur de post-traitement de markdown
     this.registerMarkdownPostProcessor((element) => {
@@ -11,16 +11,140 @@ module.exports = class MyPlugin extends Plugin {
     });
   }
 
-  // Fonction pour charger les styles CSS dynamiquement
-  async loadStyles() {
-    const stylePath = this.app.vault.adapter.getResourcePath(
-      `${this.manifest.dir}/styles.css`
-    ); // Obtenir un chemin valide
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = stylePath;
-    link.type = "text/css";
-    document.head.appendChild(link);
+  // Fonction pour injecter les styles CSS directement dans la page
+  injectStyles() {
+    const css = `
+      .custom-box {
+        border-radius: 5px;
+        padding: 15px;
+        margin: 15px 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .custom-box.note {
+        color: #000;
+        background-color: #fff;
+        border-left: 4px solid #d1d3c0;
+        border-top: 4px solid #d1d3c0;
+      }
+
+      .custom-box.tip {
+        color: #000;
+        background-color: #e8f5e9;
+        border-left: 4px solid #66bb6a;
+        border-top: 4px solid #66bb6a;
+      }
+
+      .custom-box.info {
+        color: #000;
+        background-color: #e3f2fd;
+        border-left: 4px solid #29b6f6;
+        border-top: 4px solid #29b6f6;
+      }
+
+      .custom-box.warning {
+        color: #000;
+        background-color: #fff8e1;
+        border-left: 4px solid #ffa726;
+        border-top: 4px solid #ffa726;
+      }
+
+      .custom-box.danger {
+        color: #000;
+        background-color: #ffebee;
+        border-left: 4px solid #ef5350;
+        border-top: 4px solid #ef5350;
+      }
+
+      .custom-box.success {
+        color: #000;
+        background-color: #36ff00;
+        border-left: 4px solid #28a745;
+        border-top: 4px solid #28a745;
+      }
+
+      .custom-box.error {
+        color: #fff;
+        background-color: #911a24;
+        border-left: 4px solid #e74c3c;
+        border-top: 4px solid #e74c3c;
+      }
+
+      .custom-box.critical {
+        color: #fff;
+        background-color: #ff2300;
+        border-left: 4px solid #7b0f1c;
+        border-top: 4px solid #7b0f1c;
+      }
+
+      .custom-box.debug {
+        color: #fff;
+        background-color: #486bbb;
+        border-left: 4px solid #b0bec5;
+        border-top: 4px solid #b0bec5;
+      }
+
+      .custom-box.update {
+        color: #000;
+        background-color: #6eec66;
+        border-left: 4px solid #5ebf58;
+        border-top: 4px solid #5ebf58;
+      }
+
+      .custom-box.question {
+        color: #000;
+        background-color: #f3ff00;
+        border-left: 4px solid #ffdc00;
+        border-top: 4px solid #ffdc00;
+      }
+
+      .custom-box.announcement {
+        color: #000;
+        background-color: #ec00ff;
+        border-left: 4px solid #ec407a;
+        border-top: 4px solid #ec407a;
+      }
+
+      .custom-box.progress {
+        color: #000;
+        background-color: #ede7f6;
+        border-left: 4px solid #7e57c2;
+        border-top: 4px solid #7e57c2;
+      }
+
+      .custom-box.highlight {
+        color: #000;
+        background: linear-gradient(0deg, #f6ef5c 0%, #98ceff 100%);
+        border-left: 4px solid #ff9800;
+        border-top: 4px solid #ff9800;
+      }
+
+      .box-title {
+        font-weight: bold;
+        margin-bottom: 10px;
+        position: relative;
+        padding-bottom: 5px;
+      }
+
+      .box-title::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(to right, #676860, transparent);
+      }
+
+      .box-content {
+        margin-top: -30px;
+        line-height: 1.5;
+      }
+    `;
+
+    const style = document.createElement("style");
+    style.textContent = css;
+    document.head.appendChild(style);
   }
 
   // Fonction pour détecter et transformer les blocs de type ":::type[Titre]" dans le markdown
