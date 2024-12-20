@@ -2,18 +2,22 @@ const { Plugin } = require("obsidian");
 
 module.exports = class MyPlugin extends Plugin {
   async onload() {
+    // Charger les styles CSS depuis un fichier local
+    this.loadStyles();
+
     // Inscription d'un processeur de post-traitement de markdown
-    this.registerMarkdownPostProcessor((element, context) => {
+    this.registerMarkdownPostProcessor((element) => {
       this.processNotes(element);
     });
+  }
 
-    // Charger les styles CSS depuis styles.css
-    this.registerDomEvent(document, "DOMContentLoaded", () => {
-      const link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href = this.getAssetPath("styles.css");
-      document.head.appendChild(link);
-    });
+  // Fonction pour charger les styles CSS dynamiquement
+  loadStyles() {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = this.getAssetPath("styles.css");
+    link.type = "text/css";
+    document.head.appendChild(link);
   }
 
   // Fonction pour détecter et transformer les blocs de type ":::type[Titre]" dans le markdown
@@ -38,30 +42,30 @@ module.exports = class MyPlugin extends Plugin {
     ];
 
     types.forEach((type) => {
-      // Parcourir les enfants de l'élément pour trouver les blocs correspondants
       const regex = new RegExp(`:::${type}\\[([^\\]]+)\\]([\\s\\S]*?):::`, "g");
 
       Array.from(element.childNodes).forEach((child) => {
         if (child.nodeType === Node.TEXT_NODE) {
-          const matches = [...child.textContent.matchAll(regex)];
-          if (matches.length > 0) {
-            const fragment = document.createDocumentFragment();
+          let updatedContent = child.textContent;
 
+          // Appliquer le regex pour transformer les blocs Markdown
+          const matches = [...updatedContent.matchAll(regex)];
+          if (matches.length > 0) {
             matches.forEach((match) => {
               const [fullMatch, title, content] = match;
 
               // Créer un élément DOM pour la boîte
               const boxElement = this.createBoxElement(type, title, content);
 
-              // Ajouter la boîte au fragment
-              fragment.appendChild(boxElement);
+              // Insérer la boîte avant l'enfant actuel
+              element.insertBefore(boxElement, child);
 
               // Supprimer le texte correspondant au match
-              child.textContent = child.textContent.replace(fullMatch, "");
+              updatedContent = updatedContent.replace(fullMatch, "");
             });
 
-            // Insérer les nouvelles boîtes avant le nœud textuel actuel
-            element.insertBefore(fragment, child);
+            // Mettre à jour le contenu du nœud texte après traitement
+            child.textContent = updatedContent;
           }
         }
       });
@@ -80,9 +84,11 @@ module.exports = class MyPlugin extends Plugin {
     const contentDiv = document.createElement("div");
     contentDiv.classList.add("box-content");
     content.split("\n").forEach((line) => {
-      const lineElement = document.createElement("p");
-      lineElement.textContent = line;
-      contentDiv.appendChild(lineElement);
+      if (line.trim()) {
+        const lineElement = document.createElement("p");
+        lineElement.textContent = line;
+        contentDiv.appendChild(lineElement);
+      }
     });
 
     section.appendChild(titleDiv);
