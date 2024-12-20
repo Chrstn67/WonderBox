@@ -13,9 +13,10 @@ module.exports = class MyPlugin extends Plugin {
 
   // Fonction pour charger les styles CSS dynamiquement
   loadStyles() {
+    const stylePath = `${this.manifest.dir}/styles.css`; // Obtenir le chemin relatif au fichier CSS
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = this.getAssetPath("styles.css");
+    link.href = stylePath;
     link.type = "text/css";
     document.head.appendChild(link);
   }
