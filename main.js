@@ -8,7 +8,12 @@ module.exports = class MyPlugin extends Plugin {
     });
 
     // Charger les styles CSS depuis styles.css
-    this.addStylesheet("styles.css");
+    this.registerDomEvent(document, "DOMContentLoaded", () => {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = this.getAssetPath("styles.css");
+      document.head.appendChild(link);
+    });
   }
 
   // Fonction pour détecter et transformer les blocs de type ":::type[Titre]" dans le markdown
