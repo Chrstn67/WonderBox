@@ -47,20 +47,44 @@ module.exports = class MyPlugin extends Plugin {
     const formattedContent = content.trim().replace(/\n/g, "<br>");
     return `
       <section class="custom-box ${type}">
-        <div class="box-title">${title}</div>
+        <div class="box-header">
+          <div class="box-title">${title}</div>
+          <div class="box-actions">
+            <!-- Icône de copie -->
+            <div class="icon copy-icon" onclick="navigator.clipboard.writeText('${formattedContent.replace(
+              /'/g,
+              "\\'"
+            )}')" title="Copy content">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-copy">
+                <rect x="8" y="8" width="14" height="14" rx="2" ry="2"></rect>
+                <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+              </svg>
+            </div>
+            <!-- Icône de suppression -->
+            <div class="icon remove-icon" onclick="this.closest('.custom-box').remove()" title="Remove box">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-trash">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6l-2 14H7L5 6"></path>
+                <path d="M10 11v6"></path>
+                <path d="M14 11v6"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
         <div class="box-content">${formattedContent}</div>
       </section>
     `;
   }
 };
 
-// CSS à ajouter pour styliser les boîtes
+// CSS à ajouter pour styliser les boîtes et leurs icônes
 const customBoxCSS = `
   .custom-box {
     border-radius: 5px;
     padding: 15px;
     margin: 15px 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
   }
 
   .custom-box.note {
@@ -156,16 +180,20 @@ const customBoxCSS = `
 
   .custom-box.highlight {
     color: #000;
-  background: linear-gradient(0deg, #f6ef5c 0%, #98ceff 100%);
+    background: linear-gradient(0deg, #f6ef5c 0%, #98ceff 100%);
     border-left: 4px solid #ff9800;
     border-top: 4px solid #ff9800;
   }
 
-
+  .box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
 
   .box-title {
     font-weight: bold;
-    margin-bottom: 10px;
     position: relative;
     padding-bottom: 5px;
   }
@@ -180,8 +208,28 @@ const customBoxCSS = `
     background: linear-gradient(to right, #676860, transparent);
   }
 
+  .box-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .icon {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s;
+    color : #000
+  }
+
+  .icon:hover {
+    opacity: 0.5;
+  }
+
   .box-content {
-    margin-top: -30px;
+  margin-top: -30px;
     line-height: 1.5;
   }
 `;
